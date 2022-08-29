@@ -29,7 +29,6 @@ void destroyRepository(OfferRepository* r)
 		return;
 	}
 
-	/// destroy the dynamic array
 	destroyArray(r->offers);
 	free(r->offers);
 	free(r);

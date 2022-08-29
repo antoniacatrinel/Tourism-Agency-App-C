@@ -3,99 +3,106 @@
 #include "domain.h"
 #include "dynamicArray.h"
 
-/// Structure OfferRepository that holds a pointer to a vector of pointers to offers.
-/// size = current number of elements of the vector
-/// capacity = how many elements can the vector hold, capacity >= size
+/// Structure OfferRepository holds a pointer to a dynamic array of pointers to offers
 typedef struct
 {
-	/*int capacity, size; // last version
-	Offer** offers;*/
 	DynamicArray* offers;
 }OfferRepository;
 
 /// <summary>
-/// Creates an Offer Repository (= allocates the necessary memory) and returns a pointer to it.
-/// <returns> a pointer to the created repository, NULL if allocation was unsuccessful and deallocates used memory
+/// Creates an Offer Repository (= allocates the necessary memory)
+/// </summary>
+/// <returns>a pointer to the created repository, NULL if allocation was unsuccessful and deallocates used memory</returns>
 OfferRepository* createRepository();
 
 /// <summary>
-/// Deallocates the memory occupied by the Offer Repository r.
-/// <param r= "Offer Repository", OfferRepository*>
-/// <returns> nothing
+/// Deallocates the memory occupied by the Offer Repository r
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
 void destroyRepository(OfferRepository* r);
 
 /// <summary>
-/// Gets the size of the offer repository.
-/// <param o= "Offer", Offer*>
-/// <returns> size of repo, int
+/// Returns the size of the offer repository
+/// </summary>
+/// <param name="o">Offer, OfferRepository*</param>
 int getSize(OfferRepository* o);
 
 /// <summary>
-/// Gets the capacity of the offer repository.
-/// <param o= "Offer", Offer*>
-/// <returns> capacity of repo, int
+/// Returns the capacity of the offer repository
+/// </summary>
+/// <param name="o">Offer, OfferRepository*</param>
 int getCapacity(OfferRepository* o);
 
 /// <summary>
-/// Searches for an offer with a given destination and departure date in repository r.
-/// <param r= "Offer Repository", OfferRepository*>
-/// <param destination[]= "destination of given offer", char>
-/// <param departureDate[]= "departure date of given offer", char>
-/// <returns> the position on which the offer with given destination and departure date is in the repo;
-/// <returns> -1  if the offer does not exist in the repo 
+/// Searches for an offer with a given destination and departure date in repository r
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="destination">destination of given offer, char</param>
+/// <param name="departureDate">departure date of given offer, char</param>
+/// <returns> the position on which the offer with given destination and departure date is in the repo
+///			 -1  if the offer does not exist in the repo </returns>
 int search(OfferRepository* r, char destination[], char departureDate[]);
 
 /// <summary>
-/// Searches for an offer with a given type and price date in repository r.
-/// <param r= "Offer Repository", OfferRepository*>
-/// <param type[]= "type of given offer", char>
-/// <param price= "price of given offer", double>
-/// <returns> the position on which the offer with given destination and departure date is in the repo;
-/// <returns> -1  if the offer does not exist in the repo
+/// Searches for an offer with a given type and price date in repository r
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="type">type of given offer, char</param>
+/// <param name="price">price of given offer, double</param>
+/// <returns> the position on which the offer with given destination and departure date is in the repo
+///			  -1  if the offer does not exist in the repo</returns>
 int searchByTypePrice(OfferRepository* r, char type[], double price);
 
 /// <summary>
-/// Searches for an offer with a given destination and departure date in repository r.
-/// <param r= "Offer Repository", OfferRepository*>
-/// <param destination= "destination of given offer", char*>
-/// <param departureDate= "departure date of given offer", char*>
-/// <returns> pointer to the offer with given destination and departure date if it is in the repo;
-/// <returns> NULL  if the offer does not exist in the repo 
+/// Searches for an offer with a given destination and departure date in repository r
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="destination">destination of given offer, char*</param>
+/// <param name="departureDate">departure date of given offer, char*</param>
+/// <returns> a pointer to the offer with given destination and departure date if it is in the repo
+///           NULL  if the offer does not exist in the repo </returns>
 Offer* findByDestDeparture(OfferRepository* r, char* destination, char* departureDate);
 
 /// <summary>
-/// Returns the offer on position <pos> in the offer repository.
-/// <param o= "Offer", Offer*>
-/// <param pos= "position of offer", int>
-/// <returns> a pointer to the offer on position <pos>
+/// Returns the offer on position <pos> in the offer repository
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="pos">position of offer, int</param>
+/// <returns> a pointer to the offer on position <pos></returns>
 Offer* getOfferOnPosition(OfferRepository* r, int pos);
 
 /// <summary>
-/// Adds an offer o to the repository of offers.
-/// <param r= "Offer Repository", OfferRepository*>
-/// <param o= "offer to be added", Offer*>
+/// Adds an offer o to the repository of offers
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="o">offer to be added, Offer*</param>
+/// <returns>1 if the offer was successfully added to the repo
 /// <returns> 1 if the offer was successfully added to the repo
-/// <returns> 0 if the offer couldn't be added, because another offer with the same destination and departure date already exists in the repo.
+///			  0 if the offer couldn't be added, because another offer with the same destination and departure date already exists in the repo</returns>
 int add(OfferRepository* r, Offer* o);
 
+
 /// <summary>
-/// Removes an offer o to the repository of offers.
-/// <param r= "Offer Repository", OfferRepository*>
-/// <param destination[]= "destination of offer to be removed", char>
-/// <param departureDate[]= "departure date of offer to be removed", char>/// <returns> 1 if the offer was successfully added to the repo
+/// Removes an offer o to the repository of offers
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="destination">destination of offer to be removed, char</param>
+/// <param name="departureDate">departure date of offer to be removed, char</param>
 /// <returns> 1 if the offer was successfully deleted from the repo
-/// <returns> 0 if the offer couldn't be deleted, because the offer doesn't exist in the repo.
+///			   0 if the offer couldn't be deleted, because the offer doesn't exist in the repo</returns>
 int delete(OfferRepository* r, char* destination, char* departureDate);
 
 /// <summary>
-/// Updates the an Offer from the repository.
-/// <param r= "Offer Repository", Service*>
-/// <param offerToUpdate= "Offer to update", Offer*>
-/// <param pos = "position of offer", int>
+/// Updates the an Offer from the repository
+/// </summary>
+/// <param name="r">Offer Repository, OfferRepository*</param>
+/// <param name="offerToUpdate">Offer to update, Offer*</param>
+/// <param name="pos">position of offer, int</param>
 void update(OfferRepository* r, Offer* offerToUpdate, int pos);
 
 /// <summary>
-/// Creates a copy of the current repository.
-/// <param repoToCopy= "Offer Repository to be copied", Service*>
-/// <returns> pointer to the created repository
+/// Creates a copy of the current repository
+/// </summary>
+/// <param name="repoToCopy">Offer Repository to be copied, OfferRepository*</param>
+/// <returns>pointer to the copy repository</returns>
 OfferRepository * copyRepo(OfferRepository * repoToCopy); 

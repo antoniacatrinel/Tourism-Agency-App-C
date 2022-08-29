@@ -7,34 +7,6 @@ int validateUserCommand(int command)
 	return command >= 0 && command <= 10;
 }
 
-int isEmptyString(char* s)
-{
-	return strlen(s) == 0;
-}
-
-int isInteger(char* x)
-{
-	int result = 0, xx = 0;
-
-	// reads data from x and stores it as integer in xx, if possible; returns 1 if successful
-	result = sscanf(x, "%d", &xx);
-	if (result == 1)  // x is integer
-		return xx;
-	return -1;
-}
-
-double isDouble(char* x)
-{
-	int result = 0;
-	double xx = 0;
-
-	// reads data from x and stores it as double in xx, if possible; returns 1 if successful
-	result = sscanf(x, "%lf", &xx);
-	if (result == 1)  // x is double
-		return xx;
-	return -1;
-}
-
 int validateOfferType(char* type)
 {
 	if (strcmp(type, "seaside") == 0 || strcmp(type, "mountain") == 0 || strcmp(type, "city break") == 0)
@@ -52,7 +24,7 @@ int validateDepartureDay(char* day)
 	}
 	else
 	{
-		offerDay = atoi(day);  // atoi() converts char* to int
+		offerDay = atoi(day);  
 		if (offerDay < 1 || offerDay > 30)
 		{
 			printf("Input error: day of departure must be integer between 1 and 30!\n");
@@ -72,7 +44,7 @@ int validateDepartureMonth(char* month)
 	}
 	else
 	{
-		offerMonth = atoi(month); // atoi() converts char* to int
+		offerMonth = atoi(month); 
 		if (offerMonth < 1 || offerMonth > 12)
 		{
 			printf("Input error: month of departure must be integer between 1 and 12!\n");
@@ -92,7 +64,7 @@ int validateDepartureYear(char* year)
 	}
 	else
 	{
-		offerYear = atoi(year); // atoi() converts char* to int
+		offerYear = atoi(year); 
 		if (offerYear < 2000 || offerYear > 2100)
 		{
 			printf("Input error: year of departure must be integer between 2000 and 2100!\n");
@@ -126,4 +98,30 @@ int validateSortType(char* sort)
 		printf("Input error: sort type can only be 'a' or 'd'!\n");
 		return 0;
 	}
+}
+
+int isEmptyString(char* s)
+{
+	return strlen(s) == 0;
+}
+
+int isInteger(char* x)
+{
+	int result = 0, xx = 0;
+
+	result = sscanf(x, "%d", &xx);
+	if (result == 1)  // x is integer
+		return xx;
+	return -1;
+}
+
+double isDouble(char* x)
+{
+	int result = 0;
+	double xx = 0;
+
+	result = sscanf(x, "%lf", &xx);
+	if (result == 1)  // x is double
+		return xx;
+	return -1;
 }

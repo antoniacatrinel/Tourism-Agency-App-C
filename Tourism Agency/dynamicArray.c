@@ -112,7 +112,7 @@ void deleteElem(DynamicArray* arr, int pos)
 		return;
 
 	arr->destroyFunction(arr->elements[pos]);
-	//only do this if we delete any element but the last
+	
 	if (pos != arr->size - 1)
 		arr->elements[pos] = arr->elements[arr->size - 1];
 	arr->size--;

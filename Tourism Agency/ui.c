@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err34-c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,43 +25,6 @@ void destroyUI(UI* ui)
     free(ui);
 }
 
-void trimWhiteSpace(char* s)
-{
-    int i;
-
-    //cut whitespaces at beginning of string
-    i = 0;
-    while (i < strlen(s))
-    {
-        if (s[i] == ' ' || s[i] == '\t')
-            i++;
-        else
-            break;
-    }
-
-    // cut trailing whitespaces
-    i = (int)strlen(s) - 1;
-    while (i > 0)
-    {
-        if (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
-            i--;
-        else
-            break;
-    }
-    s[i + 1] = '\0';  // put NULL at end of string
-}
-
-void lowerString(char* s)
-{
-    int i = 0;
-    while (i < strlen(s))
-    {
-        if (s[i] >= 'A' && s[i] <= 'Z') // lowercase
-            s[i] = s[i] + 32;
-        i++;
-    }
-}
-
 int readUserCommand()
 {
     char input[11] = { 0 };
@@ -72,7 +33,7 @@ int readUserCommand()
     while (finishReading == 0)
     {
         printf("Please select an option from the menu: ");
-        int scanfResult = scanf("%10s", input);  // take first 10 characters from string input
+        int scanfResult = scanf("%10s", input);
         result = isInteger(input);
         if (result == -1)
             printf("Input Error: selected option must be an integer number!\n");
@@ -649,5 +610,42 @@ void startUI(UI* ui)
             break;
         }
         }
+    }
+}
+
+void trimWhiteSpace(char* s)
+{
+    int i;
+
+    //cut whitespaces at beginning of string
+    i = 0;
+    while (i < strlen(s))
+    {
+        if (s[i] == ' ' || s[i] == '\t')
+            i++;
+        else
+            break;
+    }
+
+    // cut trailing whitespaces
+    i = (int)strlen(s) - 1;
+    while (i > 0)
+    {
+        if (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
+            i--;
+        else
+            break;
+    }
+    s[i + 1] = '\0';  // put NULL at end of string
+}
+
+void lowerString(char* s)
+{
+    int i = 0;
+    while (i < strlen(s))
+    {
+        if (s[i] >= 'A' && s[i] <= 'Z') // lowercase
+            s[i] = s[i] + 32;
+        i++;
     }
 }

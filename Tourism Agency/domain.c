@@ -93,7 +93,6 @@ void toString(Offer* o, char str[])
 	if (o == NULL)
 		return;
 
-	// store string in buffer instead of printing it in the console
 	sprintf(str, "    Offer of type %s, with destination %s, departure date %s and price %.2lf.\n", o->type, o->destination, o->departureDate, o->price);
 }
 

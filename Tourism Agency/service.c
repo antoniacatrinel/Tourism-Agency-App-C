@@ -6,6 +6,13 @@
 #include "repository.h"
 #include "operation.h"
 
+struct dates
+{
+    int day;
+    int month;
+    int year;
+};
+
 Service* createService(OfferRepository* r, DynamicArray* undoStack, DynamicArray* redoStack)
 {
     Service* s = malloc(sizeof(Service));
@@ -23,7 +30,6 @@ void destroyService(Service* s)
     if (s == NULL)
         return;
 
-    // first destroy the repository inside the service, then free the memory
     destroyRepository(s->repo);
     destroyArray(s->undoStack);
     destroyArray(s->redoStack);
@@ -38,137 +44,6 @@ OfferRepository* getRepository(Service* s)
     return s->repo;
 }
 
-time_t convertStringToDate(char* s)
-{
-    char str[51] = "";  // given string
-    strcpy(str, s);
-    struct tm str_time = { 0 };
-    time_t date;
-    int val, counter = 1;
-    char* p;
-    const char sep[2] = "/";
-    p = strtok(str, sep);
-    while (p != NULL)
-    {
-        val = atoi(p);
-        if (counter == 1) // day
-            str_time.tm_mday = val;
-        else
-            if (counter == 2) // month
-                str_time.tm_mon = val;
-            else // year
-                str_time.tm_year = val - 1900;
-        counter++;
-        p = strtok(NULL, sep);
-    }
-    date = mktime(&str_time);
-    time(&date);
-    return date;
-}
-
-int isDateAfter(time_t date1, time_t date2)
-{
-    double seconds = difftime(date1, date2);
-    printf("%lf\n", seconds);
-    if (seconds > 0)
-        return 1;
-    return 0;
-}
-
-struct dates
-{
-    int day;
-    int month;
-    int year;
-};
-
-/// <summary>
-/// compares 2 strings in format dd/mm/yyyy
-/// <returns> -1 if s1 < s2
-/// <returns> 0 if s1 = s2
-/// <returns> 1 if s1 > s2
-int compareDates(char* s1, char* s2)
-{
-    struct dates d1 = { 0 }, d2 = { 0 };
-    int val, counter = 1;
-    char str1[51] = "", str2[51] = "", * p;
-    strcpy(str1, s1);  // make a copy of the initial strings
-    strcpy(str2, s2);
-    p = strtok(str1, "/");
-    while (p != NULL)
-    {
-        val = atoi(p);
-        if (counter == 1) // day
-            d1.day = val;
-        else
-            if (counter == 2) // month
-                d1.month = val;
-            else // year
-                d1.year = val;
-        counter++;
-        p = strtok(NULL, "/");
-    }
-
-    counter = 1;
-    p = strtok(str2, "/");
-    while (p != NULL)
-    {
-        val = atoi(p);
-        if (counter == 1) // day
-            d2.day = val;
-        else
-            if (counter == 2) // month
-                d2.month = val;
-            else // year
-                d2.year = val;
-        counter++;
-        p = strtok(NULL, "/");
-    }
-    if (d1.year < d2.year)
-        return -1;
-    else
-        if (d1.year > d2.year)
-            return 1;
-        else // d1.year == d2.year
-            if (d1.month < d2.month)
-                return -1;
-            else
-                if (d1.month > d2.month)
-                    return 1;
-                else // d1.month == d2.month
-                    if (d1.day < d2.day)
-                        return -1;
-                    else
-                        if (d1.day > d2.day)
-                            return 1;
-                        else  // d1.day == d2.day
-                            return 0;
-}
-
-int isPrime(int x)
-{
-    if (x < 2)
-        return 0;
-    if (x % 2 == 0 && x != 2)
-        return 0;
-    int d;
-    for (d = 3; d * d <= x; d += 2)
-        if (x % d == 0)
-            return 0;
-    return 1;
-}
-
-void lower(char* s)
-{
-    int i = 0;
-    while (i < strlen(s))
-    {
-        if (s[i] >= 'A' && s[i] <= 'Z') // lowercase
-            s[i] = s[i] + 32;
-        i++;
-    }
-}
-
 void cleanStack(DynamicArray* stack)
 {
     int i;
@@ -180,7 +55,7 @@ void cleanStack(DynamicArray* stack)
 int addOffer(Service* s, char* type, char* destination, char* departureDate, double price)
 {
     if (search(s->repo, destination, departureDate) != -1)
-        return 0;  // duplicate offer
+        return 0;  
 
     Offer* o = createOffer(type, destination, departureDate, price);
 
@@ -636,4 +511,141 @@ OfferRepository* sortByDestinationDescending(Service* s, OfferRepository* repo)
             }
     } while (sorted == 0);
     return repo;
+}
+
+/// <summary>
+/// Converts a string to date format
+/// </summary>
+time_t convertStringToDate(char* s)
+{
+    char str[51] = "";
+    strcpy(str, s);
+    struct tm str_time = { 0 };
+    time_t date;
+    int val, counter = 1;
+    char* p;
+    const char sep[2] = "/";
+    p = strtok(str, sep);
+    while (p != NULL)
+    {
+        val = atoi(p);
+        if (counter == 1) // day
+            str_time.tm_mday = val;
+        else
+            if (counter == 2) // month
+                str_time.tm_mon = val;
+            else // year
+                str_time.tm_year = val - 1900;
+        counter++;
+        p = strtok(NULL, sep);
+    }
+    date = mktime(&str_time);
+    time(&date);
+    return date;
+}
+
+/// <summary>
+/// Compares two dates
+/// </summary>
+int isDateAfter(time_t date1, time_t date2)
+{
+    double seconds = difftime(date1, date2);
+    printf("%lf\n", seconds);
+    if (seconds > 0)
+        return 1;
+    return 0;
+}
+
+/// <summary>
+/// Compares 2 strings in format dd/mm/yyyy
+/// /// </summary>
+/// <returns> -1 if s1 < s2
+///            0 if s1 = s2
+///            1 if s1 > s2</returns>
+int compareDates(char* s1, char* s2)
+{
+    struct dates d1 = { 0 }, d2 = { 0 };
+    int val, counter = 1;
+    char str1[51] = "", str2[51] = "", * p;
+    strcpy(str1, s1);  // make a copy of the initial strings
+    strcpy(str2, s2);
+    p = strtok(str1, "/");
+    while (p != NULL)
+    {
+        val = atoi(p);
+        if (counter == 1) // day
+            d1.day = val;
+        else
+            if (counter == 2) // month
+                d1.month = val;
+            else // year
+                d1.year = val;
+        counter++;
+        p = strtok(NULL, "/");
+    }
+
+    counter = 1;
+    p = strtok(str2, "/");
+    while (p != NULL)
+    {
+        val = atoi(p);
+        if (counter == 1) // day
+            d2.day = val;
+        else
+            if (counter == 2) // month
+                d2.month = val;
+            else // year
+                d2.year = val;
+        counter++;
+        p = strtok(NULL, "/");
+    }
+    if (d1.year < d2.year)
+        return -1;
+    else
+        if (d1.year > d2.year)
+            return 1;
+        else // d1.year == d2.year
+            if (d1.month < d2.month)
+                return -1;
+            else
+                if (d1.month > d2.month)
+                    return 1;
+                else // d1.month == d2.month
+                    if (d1.day < d2.day)
+                        return -1;
+                    else
+                        if (d1.day > d2.day)
+                            return 1;
+                        else  // d1.day == d2.day
+                            return 0;
+}
+
+/// <summary>
+/// Tests the primality of a number
+/// </summary>
+int isPrime(int x)
+{
+    if (x < 2)
+        return 0;
+    if (x % 2 == 0 && x != 2)
+        return 0;
+    int d;
+    for (d = 3; d * d <= x; d += 2)
+        if (x % d == 0)
+            return 0;
+    return 1;
+}
+
+/// <summary>
+/// Converts a string to lowercase
+/// </summary>
+void lower(char* s)
+{
+    int i = 0;
+    while (i < strlen(s))
+    {
+        if (s[i] >= 'A' && s[i] <= 'Z') // lowercase
+            s[i] = s[i] + 32;
+        i++;
+    }
 }

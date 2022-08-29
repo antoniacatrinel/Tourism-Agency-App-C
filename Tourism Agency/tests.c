@@ -2,6 +2,8 @@
 #include "tests.h"
 #include "operation.h"
 #include <string.h>
+
+
 // tests for Dynamic Array structure
 void testArray()
 {
@@ -28,8 +30,8 @@ void testArray()
     destroyArray(arr);
 }
 
-// tests for domain
 
+// tests for domain
 void testOffer()
 {
     Offer* o = createOffer("city break", "barcelona", "28/04/2023", 1900.80);
@@ -64,8 +66,8 @@ void testCopy()
     destroyOffer(o);
 }
 
-// tests for repository
 
+// tests for repository
 void testSearch()
 {
     OfferRepository* r = createRepository();
@@ -138,8 +140,8 @@ void testUpdate()
     destroyRepository(r);
 }
 
-// tests for service
 
+// tests for service
 void testAddService()
 {
     OfferRepository* r = createRepository();
@@ -149,7 +151,6 @@ void testAddService()
     Service* s = createService(r, undoStack, redoStack);
     assert(addOffer(s, "seaside", "hawaii", "16/06/2022", 2000.50) == 1);
     assert(getSize(r) == 1);
-    // try to add same offer again
     assert(addOffer(s, "seaside", "hawaii", "16/06/2022", 2000.50) == 0);
     assert(getSize(r) == 1);
     destroyArray(undoStack);
@@ -169,7 +170,7 @@ void testDeleteService()
     assert(getSize(r) == 2);
     assert(deleteOffer(s, "bucovina", "19/05/2023") == 1);
     assert(getSize(r) == 1);
-    assert(deleteOffer(s, "bucovina", "19/05/2023") == 0); // no longer there
+    assert(deleteOffer(s, "bucovina", "19/05/2023") == 0); 
     assert(deleteOffer(s, "milano", "19/05/2023") == 0);
     destroyArray(undoStack);
     destroyArray(redoStack);
@@ -201,7 +202,6 @@ void testUpdateService()
     assert(updateOfferPrice(s, "tenerife", "23/09/2024", 3000) == 1);
     assert(getPrice(getElement(s->repo->offers, 0)) == 3000);
 
-    //try to update nonexistent offer
     assert(updateOfferType(s, "hawaii", "23/09/2024", "mountain") == 0);
     destroyArray(undoStack);
     destroyArray(redoStack);
@@ -210,7 +210,7 @@ void testUpdateService()
 
 void testUndoRedo()
 {
-    /*OfferRepository* r = createRepository();
+    OfferRepository* r = createRepository();
     assert(getSize(r) == 0);
     DynamicArray* undoStack = createArray(CAPACITY, &destroyOperation, &copyOperation);
     DynamicArray* redoStack = createArray(CAPACITY, &destroyOperation, &copyOperation);
@@ -233,7 +233,7 @@ void testUndoRedo()
     assert(getSize(r) == 1);
     destroyArray(undoStack);
     destroyArray(redoStack);
-    destroyService(s);*/
+    destroyService(s);
 }
 
 void testfilterByKeyWord()

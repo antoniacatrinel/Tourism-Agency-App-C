@@ -18,32 +18,36 @@ typedef struct
 }Operation;
 
 /// <summary>
-/// Creates an Operation (= allocates the necessary memory) and returns a pointer to it.
-/// <param type= "type of Operation", operationType>
-/// <param o= "Offer", Offer*>
-/// <returns> a pointer to the created operation, NULL if allocation was unsuccessful and deallocates used memory
+/// Creates an Operation (= allocates the necessary memory)
+/// </summary>
+/// <param name="type">type of Operation, operationType</param>
+/// <param name="o">Offer, Offer*</param>
+/// <returns>a pointer to the created operation, NULL if allocation was unsuccessful and deallocates used memory</returns>
 Operation* createOperation(operationType type, Offer* o);
 
 /// <summary>
-/// Deallocates the memory occupied by an Operation o.
-/// <param o= "Operation", Operation*>
-/// <returns> nothing
+/// Deallocates the memory occupied by an Operation o
+/// </summary>
+/// <param name="o">Operation, Operation*</param>
 void destroyOperation(Operation* o);
 
 /// <summary>
-/// Copies an Operation (= allocates the necessary memory) and returns a pointer to it.
-/// <param o= "Offer", Offer*>
-/// <returns> a pointer to the copy operation, NULL if allocation was unsuccessful and deallocates used memory
+/// Creates a copy of an Operation (= allocates the necessary memory)
+/// </summary>
+/// <param name="o">Operation, Operation*</param>
+/// <returns>pointer to the copy</returns>
 Operation* copyOperation(Operation* o);
 
 /// <summary>
-/// Gets the type of an Operation o.
-/// <param o= "Operation", Operation*>
-/// <returns> type of o, operationType
+/// Returns the type of an Operation o
+/// </summary>
+/// <param name="o">Operation, Operation*</param>
+/// <returns>type of o, operationType</returns>
 operationType getOperationType(Operation* o);
 
 /// <summary>
-/// Gets the object of an Operation o.
-/// <param o= "Operation", Operation*>
-/// <returns> offer of o, Offer*
+/// Returns the object of an Operation o
+/// </summary>
+/// <param name="o">Operation, Operation*</param>
+/// <returns>offer of o, Offer*</returns>
 Offer* getOperationObject(Operation* o);
